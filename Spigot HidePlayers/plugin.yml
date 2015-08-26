@@ -1,0 +1,21 @@
+name: HidePlayers
+author: Mauricius17
+version: 0.1
+
+main: de.mauricius17.hideplayers.system.HidePlayers
+
+permissions:
+  member:
+    default: true
+  vip:
+    default: false
+  youtuber:
+    default: false
+  architect:
+    default: false
+  presenter:
+    default: false
+  developer:
+    default: false
+  administrator:
+    default: false
