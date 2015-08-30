@@ -69,23 +69,25 @@ public class HidePlayers extends JavaPlugin  {
 	private void loadConfig() {
 		Utils.getConfig().options().header("In this file you can edit some settings");
 		
-		Utils.getConfig().addDefault("item_colorid_glass", 15);
-		Utils.getConfig().addDefault("item_colorid_hidden", 1);
-		Utils.getConfig().addDefault("item_colorid_visable", 10);
-		Utils.getConfig().addDefault("item_colorid_members", 5);
-		Utils.getConfig().addDefault("item_colorid_vip", 4);
-		Utils.getConfig().addDefault("item_colorid_youtuber", 10);
-		Utils.getConfig().addDefault("item_colorid_architect", 13);
-		Utils.getConfig().addDefault("item_colorid_presenter", 6);
-		Utils.getConfig().addDefault("item_colorid_developer", 3);
-		Utils.getConfig().addDefault("item_colorid_administrator", 14);
+		Utils.getConfig().addDefault("item.colorid.glass", 15);
+		Utils.getConfig().addDefault("item.colorid.hidden", 1);
+		Utils.getConfig().addDefault("item.colorid.visable", 10);
+		Utils.getConfig().addDefault("item.colorid.members", 5);
+		Utils.getConfig().addDefault("item.colorid.vip", 4);
+		Utils.getConfig().addDefault("item.colorid.youtuber", 10);
+		Utils.getConfig().addDefault("item.colorid.architect", 13);
+		Utils.getConfig().addDefault("item.colorid.presenter", 6);
+		Utils.getConfig().addDefault("item.colorid.developer", 3);
+		Utils.getConfig().addDefault("item.colorid.administrator", 14);
 		
-		Utils.getConfig().addDefault("inventory_slot", 1);
+		Utils.getConfig().addDefault("inventory.slot", 1);
+		Utils.getConfig().addDefault("inventory.item.type", "BLAZE_ROD");
 		Utils.getConfig().options().copyDefaults(true);
 		
 		try {
 			Utils.getConfig().save(Utils.getConfigFile());
 		} catch (IOException e) {
+			Bukkit.getConsoleSender().sendMessage("§cThe config.yml could not be saved successfuly!");
 			e.printStackTrace();
 		}
 	}
@@ -94,19 +96,22 @@ public class HidePlayers extends JavaPlugin  {
 		Utils.getMessages().options().header("In this file you can edit some messages!");
 		
 		Utils.getMessages().addDefault("prefix", "&8[&5HidePlayers&8] ");
-		Utils.getMessages().addDefault("players_successfuly_hidden", "&cThe group [COLOR] [GROUP] &cis now hidden!");
-		Utils.getMessages().addDefault("players_successfuly_visable", "&aThe group [COLOR] [GROUP] &ais now visable!");
-		Utils.getMessages().addDefault("item", "&6Item to hide and show players");
-		Utils.getMessages().addDefault("inventory", "&6Hide/Show Players");
-		Utils.getMessages().addDefault("inventory_visable", "&aPlayers are visable");
-		Utils.getMessages().addDefault("inventory_hidden", "&cPlayers are hidden");
-		Utils.getMessages().addDefault("inventory_group_member", "&aMembers");
-		Utils.getMessages().addDefault("inventory_group_vip", "&6VIPs");
-		Utils.getMessages().addDefault("inventory_group_youtuber", "&5Youtubers");
-		Utils.getMessages().addDefault("inventory_group_architect", "&2Architects");
-		Utils.getMessages().addDefault("inventory_group_presenter", "&cPresenters");
-		Utils.getMessages().addDefault("inventory_group_developer", "&bDevelopers");
-		Utils.getMessages().addDefault("inventory_group_administrator", "&4Administrators");
+		
+		Utils.getMessages().addDefault("players.successfuly.hidden", "&cThe group [COLOR] [GROUP] &cis now hidden!");
+		Utils.getMessages().addDefault("players.successfuly.visable", "&aThe group [COLOR] [GROUP] &ais now visable!");
+		
+		Utils.getMessages().addDefault("item.name", "&6Item to hide and show players");
+		
+		Utils.getMessages().addDefault("inventory.name", "&6Hide/Show Players");
+		Utils.getMessages().addDefault("inventory.visable", "&aPlayers are visable");
+		Utils.getMessages().addDefault("inventory.hidden", "&cPlayers are hidden");
+		Utils.getMessages().addDefault("inventory.group.member", "&aMembers");
+		Utils.getMessages().addDefault("inventory.group.vip", "&6VIPs");
+		Utils.getMessages().addDefault("inventory.group.youtuber", "&5Youtubers");
+		Utils.getMessages().addDefault("inventory.group.architect", "&2Architects");
+		Utils.getMessages().addDefault("inventory.group.presenter", "&cPresenters");
+		Utils.getMessages().addDefault("inventory.group.developer", "&bDevelopers");
+		Utils.getMessages().addDefault("inventory.group.administrator", "&4Administrators");
 		
 		Utils.getMessages().options().copyDefaults(true);
 		

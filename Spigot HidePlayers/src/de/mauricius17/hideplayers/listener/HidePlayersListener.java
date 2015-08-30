@@ -27,7 +27,7 @@ import de.mauricius17.hideplayers.utils.Utils;
 
 public class HidePlayersListener implements Listener {
 
-	String NAVIGATOR = ChatColor.translateAlternateColorCodes('&', Utils.getMessages().getString("inventory"));
+	String NAVIGATOR = ChatColor.translateAlternateColorCodes('&', Utils.getMessages().getString("inventory.name"));
 	
 	@EventHandler
 	public void onInteract(PlayerInteractEvent e) {
@@ -35,7 +35,7 @@ public class HidePlayersListener implements Listener {
 		
 		if(e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) {
 			if(e.getItem() != null && e.getItem().hasItemMeta()) {
-				if(e.getItem().getItemMeta().getDisplayName().equals(ChatColor.translateAlternateColorCodes('&', Utils.getMessages().getString("item")))) { 
+				if(e.getItem().getItemMeta().getDisplayName().equals(ChatColor.translateAlternateColorCodes('&', Utils.getMessages().getString("item.name")))) { 
 					openInventory(p);
 					e.setCancelled(true);
 				}
@@ -56,13 +56,13 @@ public class HidePlayersListener implements Listener {
 							if(isHidden(p, Groups.values()[i])) {
 								Groups.values()[i].getHidden().remove(p.getUniqueId());
 								showPlayers(p, Groups.values()[i]);
-								p.sendMessage(Utils.getPrefix() + ChatColor.translateAlternateColorCodes('&', Utils.getMessages().getString("players_successfuly_visable")).replace("[COLOR]", Groups.values()[i].getColor()).replace("[GROUP]", Groups.values()[i].getDisplayname()));
+								p.sendMessage(Utils.getPrefix() + ChatColor.translateAlternateColorCodes('&', Utils.getMessages().getString("players.successfuly.visable")).replace("[COLOR]", Groups.values()[i].getColor()).replace("[GROUP]", Groups.values()[i].getDisplayname()));
 								p.closeInventory();
 								MySQL_HidePlayers.showGroup(p.getUniqueId().toString(), Groups.values()[i]);
 							} else {
 								Groups.values()[i].getHidden().add(p.getUniqueId());
 								hidePlayers(p, Groups.values()[i]);
-								p.sendMessage(Utils.getPrefix() + ChatColor.translateAlternateColorCodes('&', Utils.getMessages().getString("players_successfuly_hidden")).replace("[COLOR]", Groups.values()[i].getColor()).replace("[GROUP]", Groups.values()[i].getDisplayname()));
+								p.sendMessage(Utils.getPrefix() + ChatColor.translateAlternateColorCodes('&', Utils.getMessages().getString("players.successfuly.hidden")).replace("[COLOR]", Groups.values()[i].getColor()).replace("[GROUP]", Groups.values()[i].getDisplayname()));
 								p.closeInventory();
 								MySQL_HidePlayers.hideGroup(p.getUniqueId().toString(), Groups.values()[i]);
 							}
@@ -118,10 +118,10 @@ public class HidePlayersListener implements Listener {
 			}
 		});
 		
-		ItemStack item = Items.getItemStack(Material.BLAZE_ROD, ChatColor.translateAlternateColorCodes('&', Utils.getMessages().getString("item")), 1, (byte) 0);
+		ItemStack item = Items.getItemStack(getMaterial(Utils.getConfig().getString("inventory.item.type")), ChatColor.translateAlternateColorCodes('&', Utils.getMessages().getString("item.name")), 1, (byte) 0);
 		
 		try {
-			p.getInventory().setItem(Utils.getConfig().getInt("inventory_slot"), item);
+			p.getInventory().setItem(Utils.getConfig().getInt("inventory.slot"), item);
 		} catch (Exception e2) {
 			e2.printStackTrace();
 		}
@@ -142,22 +142,32 @@ public class HidePlayersListener implements Listener {
 		}
 	}
 	
+	private static Material getMaterial(String material) {
+		for(Material mat : Material.values()) {
+			if(mat.toString().endsWith(material)) {
+				return mat;
+			}
+		}
+		
+		return null;
+	}
+	
 	private void openInventory(Player p) {
 		Inventory inventory = Bukkit.createInventory(null, 36, NAVIGATOR);
 		
 		try {
-			ItemStack glass = Items.getItemStack(Material.STAINED_GLASS_PANE, " ", 1, Byte.valueOf((byte) Utils.getConfig().getInt("item_colorid_glass")));
+			ItemStack glass = Items.getItemStack(Material.STAINED_GLASS_PANE, " ", 1, Byte.valueOf((byte) Utils.getConfig().getInt("item.colorid.glass")));
 			
-			ItemStack hidden = Items.getItemStack(Material.INK_SACK, ChatColor.translateAlternateColorCodes('&', Utils.getMessages().getString("inventory_hidden")), 1, Byte.valueOf(Utils.getConfig().getString("item_colorid_hidden")));
-			ItemStack visible = Items.getItemStack(Material.INK_SACK, ChatColor.translateAlternateColorCodes('&', Utils.getMessages().getString("inventory_visable")), 1,  Byte.valueOf(Utils.getConfig().getString("item_colorid_visable")));
+			ItemStack hidden = Items.getItemStack(Material.INK_SACK, ChatColor.translateAlternateColorCodes('&', Utils.getMessages().getString("inventory.hidden")), 1, Byte.valueOf(Utils.getConfig().getString("item.colorid.hidden")));
+			ItemStack visible = Items.getItemStack(Material.INK_SACK, ChatColor.translateAlternateColorCodes('&', Utils.getMessages().getString("inventory.visable")), 1,  Byte.valueOf(Utils.getConfig().getString("item.colorid.visable")));
 			
-			ItemStack members = Items.getItemStack(Material.STAINED_CLAY, Groups.MEMBERS.getDisplayname(), 1,  Byte.valueOf((byte) Utils.getConfig().getInt("item_colorid_members")));
-			ItemStack vips = Items.getItemStack(Material.STAINED_CLAY, Groups.VIP.getDisplayname(), 1,  Byte.valueOf((byte) Utils.getConfig().getInt("item_colorid_vip")));
-			ItemStack youtuber = Items.getItemStack(Material.STAINED_CLAY, Groups.YOUTUBER.getDisplayname(), 1,  Byte.valueOf((byte) Utils.getConfig().getInt("item_colorid_youtuber")));
-			ItemStack architects = Items.getItemStack(Material.STAINED_CLAY, Groups.ARCHITECTS.getDisplayname(), 1,  Byte.valueOf((byte) Utils.getConfig().getInt("item_colorid_architect")));
-			ItemStack presenters = Items.getItemStack(Material.STAINED_CLAY, Groups.PRESENTERS.getDisplayname(), 1,  Byte.valueOf((byte) Utils.getConfig().getInt("item_colorid_presenter")));
-			ItemStack developer = Items.getItemStack(Material.STAINED_CLAY, Groups.DEVELOPER.getDisplayname(), 1,  Byte.valueOf((byte) Utils.getConfig().getInt("item_colorid_developer")));
-			ItemStack administrator = Items.getItemStack(Material.STAINED_CLAY, Groups.ADMINISTRATOR.getDisplayname(), 1,  Byte.valueOf((byte) Utils.getConfig().getInt("item_colorid_administrator")));	
+			ItemStack members = Items.getItemStack(Material.STAINED_CLAY, Groups.MEMBERS.getDisplayname(), 1,  Byte.valueOf((byte) Utils.getConfig().getInt("item.colorid.members")));
+			ItemStack vips = Items.getItemStack(Material.STAINED_CLAY, Groups.VIP.getDisplayname(), 1,  Byte.valueOf((byte) Utils.getConfig().getInt("item.colorid.vip")));
+			ItemStack youtuber = Items.getItemStack(Material.STAINED_CLAY, Groups.YOUTUBER.getDisplayname(), 1,  Byte.valueOf((byte) Utils.getConfig().getInt("item.colorid.youtuber")));
+			ItemStack architects = Items.getItemStack(Material.STAINED_CLAY, Groups.ARCHITECTS.getDisplayname(), 1,  Byte.valueOf((byte) Utils.getConfig().getInt("item.colorid.architect")));
+			ItemStack presenters = Items.getItemStack(Material.STAINED_CLAY, Groups.PRESENTERS.getDisplayname(), 1,  Byte.valueOf((byte) Utils.getConfig().getInt("item.colorid.presenter")));
+			ItemStack developer = Items.getItemStack(Material.STAINED_CLAY, Groups.DEVELOPER.getDisplayname(), 1,  Byte.valueOf((byte) Utils.getConfig().getInt("item.colorid.developer")));
+			ItemStack administrator = Items.getItemStack(Material.STAINED_CLAY, Groups.ADMINISTRATOR.getDisplayname(), 1,  Byte.valueOf((byte) Utils.getConfig().getInt("item.colorid.administrator")));	
 			
 			for(int i = 0; i < inventory.getSize(); i++) {
 				inventory.setItem(i, glass);
@@ -223,14 +233,13 @@ public class HidePlayersListener implements Listener {
 	}
 	
 	public enum Groups {
-		
-		MEMBERS(new ArrayList<UUID>(), "member", new ArrayList<UUID>(), ChatColor.translateAlternateColorCodes('&', Utils.getMessages().getString("inventory_group_member")), 10, "§a"),
-		VIP(new ArrayList<UUID>(), "vip", new ArrayList<UUID>(), ChatColor.translateAlternateColorCodes('&', Utils.getMessages().getString("inventory_group_vip")), 11, "§6"),
-		YOUTUBER(new ArrayList<UUID>(), "youtuber", new ArrayList<UUID>(), ChatColor.translateAlternateColorCodes('&', Utils.getMessages().getString("inventory_group_youtuber")), 12, "§5"),
-		ARCHITECTS(new ArrayList<UUID>(), "architect", new ArrayList<UUID>(), ChatColor.translateAlternateColorCodes('&', Utils.getMessages().getString("inventory_group_architect")), 13, "§2"),
-		PRESENTERS(new ArrayList<UUID>(), "presenter", new ArrayList<UUID>(), ChatColor.translateAlternateColorCodes('&', Utils.getMessages().getString("inventory_group_presenter")), 14, "§c"),
-		DEVELOPER(new ArrayList<UUID>(), "developer", new ArrayList<UUID>(), ChatColor.translateAlternateColorCodes('&', Utils.getMessages().getString("inventory_group_developer")), 15, "§b"),
-		ADMINISTRATOR(new ArrayList<UUID>(), "administrator", new ArrayList<UUID>(), ChatColor.translateAlternateColorCodes('&', Utils.getMessages().getString("inventory_group_administrator")), 16, "§4");
+		MEMBERS(new ArrayList<UUID>(), "member", new ArrayList<UUID>(), ChatColor.translateAlternateColorCodes('&', Utils.getMessages().getString("inventory.group.member")), 10, "§a"),
+		VIP(new ArrayList<UUID>(), "vip", new ArrayList<UUID>(), ChatColor.translateAlternateColorCodes('&', Utils.getMessages().getString("inventory.group.vip")), 11, "§6"),
+		YOUTUBER(new ArrayList<UUID>(), "youtuber", new ArrayList<UUID>(), ChatColor.translateAlternateColorCodes('&', Utils.getMessages().getString("inventory.group.youtuber")), 12, "§5"),
+		ARCHITECTS(new ArrayList<UUID>(), "architect", new ArrayList<UUID>(), ChatColor.translateAlternateColorCodes('&', Utils.getMessages().getString("inventory.group.architect")), 13, "§2"),
+		PRESENTERS(new ArrayList<UUID>(), "presenter", new ArrayList<UUID>(), ChatColor.translateAlternateColorCodes('&', Utils.getMessages().getString("inventory.group.presenter")), 14, "§c"),
+		DEVELOPER(new ArrayList<UUID>(), "developer", new ArrayList<UUID>(), ChatColor.translateAlternateColorCodes('&', Utils.getMessages().getString("inventory.group.developer")), 15, "§b"),
+		ADMINISTRATOR(new ArrayList<UUID>(), "administrator", new ArrayList<UUID>(), ChatColor.translateAlternateColorCodes('&', Utils.getMessages().getString("inventory.group.administrator")), 16, "§4");
 		
 		List<UUID> players;
 		List<UUID> hidden;
